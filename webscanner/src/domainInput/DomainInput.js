@@ -22,7 +22,7 @@ class DomainInput extends Component {
   render() {
     return (
       <div className="">
-        <input type="text" value={this.state.text} onChange={this.handleInput}/>
+        <input type="text" value={this.state.text} onChange={this.handleInput} />
       </div>
     );
   }

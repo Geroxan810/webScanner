@@ -4,6 +4,7 @@ import DomainInput from "./domainInput/DomainInput";
 import ResulTable from "./resultTable/ResulTable";
 import Button from "./assets/Button";
 
+
 const searchFiles = [
   'drevena-postel',
   'drevena-postel',
@@ -13,6 +14,8 @@ const searchFiles = [
   'drevena-postel'
 ]
 
+let testData = []
+
 class App extends Component {
 
   constructor(props) {
@@ -20,63 +23,38 @@ class App extends Component {
 
     this.state = {
       domainName: '',
-      isActive: false,
-      error: '',
-      findIssue: {},
-      processRunning: false
+      runTest: false,
     }
 
     this.setDomainName = this.setDomainName.bind(this)
     this.toggleClick = this.toggleClick.bind(this)
-    this.fetchUrls = this.fetchUrls.bind(this)
-    this.getFetchHead = this.getFetchHead.bind(this)
-
-  }
-
-  fetchUrls = () => {
-    const res = [];
-    this.setState({
-      processRunning: true
-    })
-    if (this.state.isActive) {
-      searchFiles.forEach((val, index)=>{
-        res.push(this.getFetchHead(this.state.domainName, searchFiles[index]))
-      })
-      Promise.all(res).then((response)=>{
-        this.setState({
-          findIssue: response.map(response => {return {url: response.url, code: response.status} })
-        })
-      })
-    } else this.setState({error: 'missing domain'})
-  }
-
-  getFetchHead = (url, option) => {
-    return fetch('//' + url + '/' + option)
   }
 
   setDomainName = (input) => {
+    // remove any protocol and slash on end?
+    input = input.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, '')
     this.setState({
       domainName: input
     })
   }
 
-  toggleClick = (isActive) => {
+  toggleClick = (runTest) => {
     this.setState({
-      isActive: !isActive
+      runTest: !runTest
     })
 
-    if (isActive) {
-      this.fetchUrls()
+    if (runTest) {
+      testData = searchFiles.map((data)=>{
+        return '//' + this.state.domainName + '/' + data
+      })
     }
-
   }
 
   render() {
     return <div className="App">
-      <DomainInput onChangeInput={this.setDomainName}/>
-      <Button btnStatus={this.state.isActive} title='btn' onToggleBtn={this.toggleClick}/>
-      {this.state.findIssue.length ? <ResulTable res={this.state.findIssue}/> : null}
-      {this.state.error ? this.state.error : null}
+      <DomainInput onChangeInput={this.setDomainName} />
+      <Button btnStatus={this.state.runTest} title='btn' onToggleBtn={this.toggleClick}/>
+      <ResulTable data={testData}/>
     </div>;
   }
 }
