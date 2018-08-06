@@ -1,4 +1,19 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
+
+const InputWrapper = styled.div`
+  margin-bottom: 1.3em;
+`
+
+const Input = styled.input`
+  border-radius: 10px;
+  font-size: 25px;
+  padding: 15px 25px;
+  background: #fff;
+  color: #3b3b3b;
+  border: none;
+  box-shadow: 2px 5px 8px 1px #ababab9c;
+`;
 
 class DomainInput extends Component {
 
@@ -21,9 +36,9 @@ class DomainInput extends Component {
 
   render() {
     return (
-      <div className="">
-        <input type="text" value={this.state.text} onChange={this.handleInput} />
-      </div>
+      <InputWrapper>
+        <Input type="text" value={this.state.text} onChange={this.handleInput} placeholder='example.com' />
+      </InputWrapper>
     );
   }
 }

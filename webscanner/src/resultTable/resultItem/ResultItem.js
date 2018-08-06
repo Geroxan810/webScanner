@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 
+const ResultChild = styled.div`
+  background: #fff;
+  padding: 20px 30px;
+  list-style: none;
+  margin-bottom: 1em;
+  border-radius: 5px;
+`
 class ResultItem extends Component {
 
   constructor() {
@@ -18,7 +26,7 @@ class ResultItem extends Component {
   }
 
   render() {
-    return <li>{this.props.value} - {this.state.status ? this.state.status : 'in progress'}</li>
+    return <ResultChild>{this.props.value} - {this.state.status ? this.state.status : 'in progress'}</ResultChild>
   }
 
 }

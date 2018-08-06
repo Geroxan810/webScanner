@@ -3,16 +3,26 @@ import './App.css';
 import DomainInput from "./domainInput/DomainInput";
 import ResulTable from "./resultTable/ResulTable";
 import Button from "./assets/Button";
+import styled from 'styled-components';
+import Container from './assets/Container'
+
+// import config with urls
+import jsonData from './config.json';
+
+const AppContainer = styled.div` 
+  background-color: #ebebeb;
+  height: 100vh;
+`
+
+const SearchZone = styled.div`
+ margin: 10em;
+ padding: 15px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+`
 
 
-const searchFiles = [
-  'drevena-postel',
-  'drevena-postel',
-  'drevena-postel',
-  'drevena-postel',
-  'drevena-postel',
-  'drevena-postel'
-]
 
 let testData = []
 
@@ -23,11 +33,19 @@ class App extends Component {
 
     this.state = {
       domainName: '',
+      urls: [],
       runTest: false,
     }
 
     this.setDomainName = this.setDomainName.bind(this)
     this.toggleClick = this.toggleClick.bind(this)
+  }
+
+  componentDidMount() {
+    const loadData = () => JSON.parse(JSON.stringify(jsonData))
+    this.setState({
+      urls: loadData()
+    })
   }
 
   setDomainName = (input) => {
@@ -44,18 +62,29 @@ class App extends Component {
     })
 
     if (runTest) {
-      testData = searchFiles.map((data)=>{
+      let url = this.state.urls.map((x)=>{
+        return x.url
+      });
+      testData = url.map((data)=>{
         return '//' + this.state.domainName + '/' + data
       })
     }
   }
 
   render() {
-    return <div className="App">
-      <DomainInput onChangeInput={this.setDomainName} />
-      <Button btnStatus={this.state.runTest} title='btn' onToggleBtn={this.toggleClick}/>
-      <ResulTable data={testData}/>
-    </div>;
+    return (
+      <AppContainer>
+        <Container>
+          <SearchZone>
+            <DomainInput onChangeInput={this.setDomainName} />
+            <Button btnStatus={this.state.runTest} title='Analyze page' onToggleBtn={this.toggleClick}/>
+          </SearchZone>
+        </Container>
+
+        <ResulTable data={testData}/>
+
+      </AppContainer>
+    );
   }
 }
 

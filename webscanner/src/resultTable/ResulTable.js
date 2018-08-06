@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import ResultItem from "./resultItem/ResultItem";
+import styled from 'styled-components';
+
+const ResultBody = styled.div`
+  padding: 0 20px;
+`
 
 class ResulTable extends Component {
 
@@ -8,23 +13,19 @@ class ResulTable extends Component {
   }
 
   render() {
-    if (this.props.data) {
+
+    if (this.props.data.length) {
       const {data} = this.props
       const resultItems = data.map((item, index) =>
         <ResultItem key={index} value={item}/>
       )
       return (
-        <div className="">
-          <ul>
+        <ResultBody className="">
             {resultItems}
-          </ul>
-        </div>
+        </ResultBody>
       );
     } else {
-      return (
-        <div className="">
-        </div>
-      );
+      return null
     }
   }
 }
