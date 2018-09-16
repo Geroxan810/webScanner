@@ -1,19 +1,21 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import  React, { Component }  from 'react'
+import PropTypes from 'prop-types';
+import styled, { css } from 'styled-components';
 
 
-const Btn = styled.button`
-  background-color: #ffbc00;    
-  padding: 20px 25px;
-  border-radius: 5px;
+const Btn = styled.button `
+  color: ${props => props.primary ? '#fff' : '#000'};
+  background-color: ${props => props.primary ? '#ffbc00' : '#d2d0d0'};
   border: none;
-  font-size: 0.9em;
-  cursor: pointer;
-  transition: box-shadow 0.3s ease
-  &:hover {
-    box-shadow: 3px 3px 5px 1px #b9b9b9;
-  }
-`;
+  padding: ${props => props.bigButton ? '15px 30px' : '10px 20px'};
+  font-size: ${props => props.bigButton ? '1.2em' : '0.8em'};
+  border-radius: 5px;
+  
+  ${props => props.active && css `
+    color: #000
+  `}
+  
+`
 
 class Button extends Component {
 
@@ -21,29 +23,50 @@ class Button extends Component {
     super(props)
 
     this.state = {
-      isActive: false
+      active: this.props.active
     }
 
-    this.toggleClick = this.toggleClick.bind(this)
+    this.handleActiveState = this.handleActiveState.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
-  toggleClick = () => {
-    const currentState = this.state.isActive
-    this.setState ({
-      isActive: !currentState
+  handleClick = (event) => {
+    this.handleActiveState(this.props.active)
+  }
+
+  handleChange = (event) => {
+    if (this.props.onChange) {
+      this.props.onChange(event)
+      if (this.props.active) {
+        this.handleActiveState(this.props.active)
+      }
+    }
+  }
+
+  handleActiveState = (status) => {
+    this.setState({
+      active: !this.state.active
     })
-    this.props.onToggleBtn(currentState)
   }
 
   render() {
-    const { btnStatus } = this.props
-
     return (
-      <Btn onClick={this.toggleClick}>
-        {this.props.title} - {btnStatus ? 'deactive': 'active'}
+      <Btn primary={this.props.primary} bigButton={this.props.bigButton} active={this.state.active} onClick={this.handleClick} onChange={this.handleChange}>
+        {this.props.text}
       </Btn>
-    );
+    )
   }
+
 }
 
-export default Button;
+
+Button.propTypes = {
+  text: PropTypes.string,
+  primary: PropTypes.bool,
+  bigButton: PropTypes.bool,
+  onClick: PropTypes.func,
+  onChange: PropTypes.func
+}
+
+export default Button

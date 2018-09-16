@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import './App.css';
 import DomainInput from "./domainInput/DomainInput";
 import ResulTable from "./resultTable/ResulTable";
-import Button from "./assets/Button";
+import Button_old from "./assets/Button_old";
 import styled from 'styled-components';
 import Container from './assets/Container'
 
 // import config with urls
 import jsonData from './config.json';
+import Button from "./assets/Button";
 
 const AppContainer = styled.div` 
   background-color: #ebebeb;
@@ -21,7 +22,6 @@ const SearchZone = styled.div`
  flex-direction: column;
  align-items: center;
 `
-
 
 
 let testData = []
@@ -75,9 +75,10 @@ class App extends Component {
     return (
       <AppContainer>
         <Container>
+          <Button primary bigButton text={'btn test'}/>
           <SearchZone>
             <DomainInput onChangeInput={this.setDomainName} />
-            <Button btnStatus={this.state.runTest} title='Analyze page' onToggleBtn={this.toggleClick}/>
+            <Button_old primary btnStatus={this.state.runTest} title='Analyze page' onToggleBtn={this.toggleClick}/>
           </SearchZone>
         </Container>
 
